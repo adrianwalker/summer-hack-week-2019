@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV
@@ -85,4 +85,3 @@ test_input_scaled = scaler.transform(test_input)
 predicted_outcome = svc.predict(test_input_scaled)
 
 print(predicted_outcome)
-
