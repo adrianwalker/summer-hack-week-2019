@@ -25,7 +25,7 @@ dataset.columns = [
 print(dataset.shape)
 print(dataset.head())
 
-dataset[GLUCOSE_COLUMN] = dataset[BMI_COLUMN].replace(to_replace=0, value=dataset[BMI_COLUMN].median())
+dataset[GLUCOSE_COLUMN] = dataset[GLUCOSE_COLUMN].replace(to_replace=0, value=dataset[GLUCOSE_COLUMN].median())
 dataset[BLOOD_PRESSURE_COLUMN] = dataset[BLOOD_PRESSURE_COLUMN].replace(to_replace=0,
                                                                         value=dataset[BLOOD_PRESSURE_COLUMN].median())
 dataset[SKIN_THICKNESS_COLUMN] = dataset[SKIN_THICKNESS_COLUMN].replace(to_replace=0,
@@ -68,7 +68,7 @@ if determine_best_params:
     print(svc)
 else:
     # ... or just create one
-    svc = SVC(gamma='auto')
+    svc = SVC(C=10, gamma='auto')
 
 # Train the model
 svc.fit(train_set_scaled, train_set_outcomes)
@@ -85,3 +85,4 @@ test_input_scaled = scaler.transform(test_input)
 predicted_outcome = svc.predict(test_input_scaled)
 
 print(predicted_outcome)
+
