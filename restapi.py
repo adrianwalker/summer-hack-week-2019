@@ -56,6 +56,10 @@ def _predict_outcome(data):
 
     return predicted_outcome.tolist()
 
+@app.route('/', methods=['GET'])
+def root():
+    return app.send_static_file('index.html')
+
 @app.route('/predict', methods=['POST'])
 def predict():
 

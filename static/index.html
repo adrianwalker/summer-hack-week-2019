@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function predict() {
+
+            data = {
+                "pregnancies": $("#pregnancies").val(),
+                "glucose": $("#glucose").val(),
+                "blood_pressure": $("#blood_pressure").val(),
+                "skin_thickness": $("#skin_thickness").val(),
+                "insulin": $("#insulin").val(),
+                "bmi": $("#bmi").val(),
+                "diabetic_func": $("#diabetic_func").val(),
+                "age": $("#age").val(),
+            }
+
+            $.ajax ({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: 'http://localhost:5000/predict',
+                data:  JSON.stringify(data),
+                success: function (data) {
+
+                    risk = data[0][0]
+                    if (risk) {
+                        $("#risk").val("High Risk")
+                    } else {
+                        $("#risk").val("Low Risk")
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <label for="pregnancies">Pregnancies:</label>
+            </td>
+            <td>
+                <input id="pregnancies" type="number" value="8" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="glucose">Glucose:</label>
+            </td>
+            <td>
+                <input id="glucose" type="number" value="155" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="blood_pressure">Blood Pressure:</label>
+            </td>
+            <td>
+                <input id="blood_pressure" type="number" value="62" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="skin_thickness">Skin Thickness:</label>
+            </td>
+            <td>
+                <input id="skin_thickness" type="number" value="26" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                 <label for="insulin">Insulin:</label>
+            </td>
+            <td>
+                <input id="insulin" type="number" value="495" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="bmi">BMI:</label>
+            </td>
+            <td>
+                <input id="bmi" type="number" value="34.0" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="diabetic_func">Diabetic Function:</label>
+            </td>
+            <td>
+                <input id="diabetic_func" type="number" value="0.543" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="age">Age:</label>
+            </td>
+            <td>
+                <input id="age" type="number" value="46" onchange="predict()">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="risk">Risk:</label>
+            </td>
+            <td>
+                <input id="risk" type="text" value="" onchange="predict()">
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
