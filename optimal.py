@@ -8,6 +8,7 @@ from keras.engine.saving import load_model
 from keras.models import Sequential
 from keras.layers.core import Dense
 from keras.optimizers import SGD, Adagrad
+from sklearn.externals import joblib
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
@@ -23,11 +24,16 @@ AGE_COLUMN = "AGE"
 OUTCOME_COLUMN = "OUTCOME"
 
 DATA_FILE = './pima-indians-diabetes.csv'
-MODEL_FILE = './model.h5'
+MODEL_FILE = './model.dat'
+SCALER_FILE = './scaler.dat'
 
 # Remove previous saved model
 if os.path.exists(MODEL_FILE):
     os.remove(MODEL_FILE)
+
+# Remove previous saved scaler
+if os.path.exists(SCALER_FILE):
+    os.remove(SCALER_FILE)
 
 # Read data file
 dataset = pd.read_csv(DATA_FILE)
@@ -57,6 +63,10 @@ scaler.fit(train_set)
 train_set_scaled = scaler.transform(train_set)
 test_set_scaled = scaler.transform(test_set)
 
+# Save the scaler
+joblib.dump(scaler, SCALER_FILE)
+
+# Build the model
 model = Sequential()
 model.add(Dense(32, input_dim=8, activation='sigmoid', init='uniform'))
 model.add(Dense(16, activation='sigmoid', init='uniform'))
@@ -70,13 +80,11 @@ model.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer=optimi
 model.fit(train_set_scaled, train_set_outcomes, nb_epoch=1000, verbose=1, callbacks=[mc, es])
 
 # Evaluate training set
-
 train_set_scores = model.evaluate(train_set_scaled, train_set_outcomes)
 print("Train set %s: %.2f" % (model.metrics_names[0], train_set_scores[0]))
 print("Train set %s: %.2f%%" % (model.metrics_names[1], train_set_scores[1] * 100))
 
 # Evaluate test set
-
 test_set_scores = model.evaluate(test_set_scaled, test_set_outcomes)
 print("Test set %s: %.2f" % (model.metrics_names[0], test_set_scores[0]))
 print("Test set %s: %.2f%%" % (model.metrics_names[1], test_set_scores[1] * 100))
